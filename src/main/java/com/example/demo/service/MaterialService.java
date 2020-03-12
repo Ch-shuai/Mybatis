@@ -15,4 +15,5 @@ public interface MaterialService {
     List<Material> getData();
 
     Map<Integer, Object> getMap();
+
 }

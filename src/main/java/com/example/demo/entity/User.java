@@ -13,10 +13,10 @@ import java.util.Date;
  */
 @Data
 public class User {
+    private Integer id;
     private String name;
     private String age;
     private Date birthday;
-    private String id;
     private String username;
     private String password;
 
