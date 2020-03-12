@@ -33,5 +33,6 @@ public class ExcelServiceImpl implements ExcelService {
         Map<Integer, Object> map = materialDao.getMap();
         List<Material> list = materialDao.getList();
         ExcelUtils.export(response,list);
+
     }
 }
