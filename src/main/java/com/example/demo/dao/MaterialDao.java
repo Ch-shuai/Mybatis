@@ -4,6 +4,7 @@ import com.example.demo.entity.po.Material;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import tk.mybatis.mapper.common.BaseMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 
 @Mapper
-public interface MaterialDao {
+public interface MaterialDao extends BaseMapper<Material> {
 
     List<Material> getList();
 
