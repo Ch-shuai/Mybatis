@@ -9,6 +9,7 @@ import java.util.Set;
  *
  * @author Ch-shuai
  * @Description
+ *      角色对应实体类
  */
 @Data
 public class Role {

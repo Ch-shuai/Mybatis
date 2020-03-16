@@ -27,12 +27,10 @@ import java.util.stream.Stream;
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialDao materialDao;
-    private final SqlSessionFactoryBuilder sqlSessionFactoryBuilder;
 
     @Autowired
-    public MaterialServiceImpl(MaterialDao materialDao, SqlSessionFactoryBuilder sqlSessionFactoryBuilder) {
+    public MaterialServiceImpl(MaterialDao materialDao) {
         this.materialDao = materialDao;
-        this.sqlSessionFactoryBuilder = sqlSessionFactoryBuilder;
     }
 
     @Override
