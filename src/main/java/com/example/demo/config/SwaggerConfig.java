@@ -23,5 +23,21 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    /**
+     * RequestHandlerSelectors.basePackage(“com.swagger”)，这是扫描注解的配置，即你的API接口位置。
+     */
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com"))
+                .paths(PathSelectors.any()).build();
+    }
 
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Spring Boot中使用Swagger2构建RESTful APIs")
+                .version("1.0").build();
+    }
 }
