@@ -25,11 +25,11 @@ import java.util.jar.JarOutputStream;
  *             fileOutputStream.close();
  *             fileInputStream.close();
  */
-public class FileInputStreamTest {
+public class FileStreamTest {
 
     public static void main(String[] args) throws Exception {
-        FileInputStreamTest fileInputStreamTest = new FileInputStreamTest();
-        fileInputStreamTest.CopyDirectoryTest("D:\\Collections\\node.js");
+        FileStreamTest filetStreamTest = new FileStreamTest();
+//        filetStreamTest.CopyDirectoryTest("D:\\Collections\\node.js");
     }
 
     /**
@@ -172,8 +172,20 @@ public class FileInputStreamTest {
         }
     }
     /**
-     *
+     *      使用字符流的读取和写入
+     *          Char是字符
      */
+    public void ReaderTest(String filePath) throws Exception {
+        File file = new File(filePath);
+        FileReader fileReader = new FileReader(file);
+        char[] chars = new char[10000];
+        int read = fileReader.read(chars);
+        FileWriter fileWriter = new FileWriter("C:\\Users\\12825\\Desktop\\"+file.getName());
+        fileWriter.write(read);
+        fileWriter.flush();
+        fileWriter.close();
+        fileReader.close();
+      }
 
     /**
      * 检验数据流的编码格式
