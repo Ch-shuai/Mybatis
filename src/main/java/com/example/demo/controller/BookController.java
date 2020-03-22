@@ -16,6 +16,7 @@ import java.util.Map;
  *
  * @author Ch-shuai
  * @Description
+ *      Swagger-Ui的模板
  */
 @RestController
 @Api(tags = "BookController", description = "BookController | 通过书来测试swagger")
