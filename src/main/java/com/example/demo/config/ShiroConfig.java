@@ -53,9 +53,6 @@ public class ShiroConfig{
         boolean authenticated = subject.isAuthenticated();
         System.out.println(authenticated);
 
-        subject.logout();
-        System.out.println(authenticated);
-
     }
 
 }
