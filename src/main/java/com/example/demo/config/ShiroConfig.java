@@ -11,7 +11,6 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
  *  shiro配置
  *
  *      @RequiresAuthentication
- *
  * 　　验证用户是否登录，等同于方法subject.isAuthenticated() 结果为true时。
  *
  *      @RequiresPermissions
