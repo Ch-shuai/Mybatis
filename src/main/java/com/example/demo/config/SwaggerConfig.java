@@ -25,7 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     /**
-     * RequestHandlerSelectors.basePackage(“com.swagger”)，这是扫描注解的配置，即你的API接口位置。
+     * RequestHandlerSelectors.basePackage(“com.example.demo.controller”)，这是扫描注解的配置，即你的API接口位置。
      */
     @Bean
     @Profile({"dev","test"})

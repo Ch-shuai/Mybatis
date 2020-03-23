@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.po.Material;
 import com.example.demo.service.MaterialService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,8 @@ public class MaterialController {
         this.materialService = materialService;
     }
 
-    @RequestMapping("")
+    @GetMapping("")
+    @ApiOperation("获得所有的Material")
     public List<Material> getAllData(){
         List<Material> materialList = materialService.getData();
         return materialList;

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.RedisService;
+import com.example.demo.service.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +23,12 @@ public class RedisController {
         this.redisService = redisService;
     }
 
+
     @RequestMapping("")
     public String getDataFromRedis(){
-       String str = redisService.getData();
-       return str;
+        redisService.set("kkk","sdsa", Long.valueOf(60*3));
+
+        String s = redisService.get("kkk");
+        return s;
     }
 }
