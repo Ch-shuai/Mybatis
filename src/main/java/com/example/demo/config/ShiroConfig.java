@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.catalina.realm.JDBCRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -32,27 +33,29 @@ import org.testng.annotations.Test;
 @Configuration
 public class ShiroConfig{
 
+    JDBCRealm jdbcRealm = new JDBCRealm();
     SimpleAccountRealm simpleAccountRealm = new SimpleAccountRealm();
+
     @Before
     public void loginUser(){
-        simpleAccountRealm.addAccount("wzh","666");
+        simpleAccountRealm.addAccount("wzh","666","admin","user");
     }
 
     @Test
     public void testAuthentication() {
-        //创建SecurityManager
         DefaultSecurityManager securityManager = new DefaultSecurityManager();
         SecurityUtils.setSecurityManager(securityManager);
-        securityManager.setRealm(simpleAccountRealm);
-        //主题提交认证
+
         Subject subject = SecurityUtils.getSubject();
 
-        UsernamePasswordToken token = new UsernamePasswordToken("wzh", "222");
+        UsernamePasswordToken token = new UsernamePasswordToken("www", "www");
         subject.login(token);
 
         boolean authenticated = subject.isAuthenticated();
-        System.out.println(authenticated);
+        System.out.println("subject.isAuthenticated()"+authenticated);
 
+        subject.logout();
+        System.out.println("subject.isAuthenticated()"+subject.isAuthenticated());
     }
 
 }

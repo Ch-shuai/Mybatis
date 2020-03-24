@@ -158,7 +158,11 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 
 	<!-- 构建管理 -->
 	<!-- 添加mapper的配置扫描 -->
