@@ -10,4 +10,9 @@
     <select id="getMap" resultType="map">
         select * from t_zjds_oa_material
     </select>
+
+    <insert id="addarr" parameterType="TestElectric">
+        insert into test_electric (Max_electric,Min_electric,Sum_electric)
+        value (#{MaxElectric},#{MinElectric},#{SumElectric})
+    </insert>
 </mapper>

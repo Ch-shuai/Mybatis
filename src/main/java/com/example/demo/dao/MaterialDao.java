@@ -1,9 +1,9 @@
 package com.example.demo.dao;
 
+import com.example.demo.entity.TestElectric;
 import com.example.demo.entity.po.Material;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.BaseMapper;
 
 import java.util.List;
@@ -23,4 +23,6 @@ public interface MaterialDao extends BaseMapper<Material> {
 
     @MapKey("id")
     Map<Integer, Object> getMap();
+
+    void addarr(TestElectric testElectric);
 }

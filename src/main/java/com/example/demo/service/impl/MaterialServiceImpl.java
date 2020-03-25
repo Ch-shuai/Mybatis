@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.MaterialDao;
+import com.example.demo.entity.TestElectric;
 import com.example.demo.entity.po.Material;
 import com.example.demo.service.MaterialService;
 import org.apache.ibatis.io.Resources;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -51,4 +51,15 @@ public class MaterialServiceImpl implements MaterialService {
         return map;
     }
 
+    @Override
+    public String addData() {
+
+        String result = "true";
+        Random random = new Random();
+        for(int i =1;i<=1000;i++){
+            TestElectric testElectric = new TestElectric(i, random.nextInt(10000), random.nextInt(100000), random.nextInt(10000));
+            materialDao.addarr(testElectric);
+        }
+        return result;
+    }
 }
