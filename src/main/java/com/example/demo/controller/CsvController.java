@@ -1,16 +1,17 @@
 package com.example.demo.controller;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import joinery.DataFrame;
+import com.example.demo.entity.csvDate;
+import com.example.demo.service.CsvService;
+import com.example.demo.utils.CsvUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
-import java.sql.Array;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.*;
 
-import static jdk.nashorn.internal.objects.Global.println;
 
 /**
  * 2020/3/26
@@ -20,12 +21,27 @@ import static jdk.nashorn.internal.objects.Global.println;
  * description:
  */
 @RestController
+@RequestMapping("Csv")
 public class CsvController {
-    public static void main(String[] args) throws IOException {
-        String srcPath = "C:\\Users\\bjkf0\\Documents\\WeChat Files\\wxid_piv5b666a92f22\\FileStorage\\File\\2020-03\\106_A.csv";
-        String separator = ",";
-        DataFrame<Object> dataFrame = DataFrame.readCsv(srcPath, separator);
 
-        ListIterator<Map<Object, Object>> itermap = dataFrame.itermap();
+    private final CsvService csvService;
+
+    @Autowired
+    public CsvController(CsvService csvService) {
+        this.csvService = csvService;
+    }
+
+
+    /**
+     * 按照时间对数据进行分析，
+     *     一天中获取最大用电量，最小用电量，平均用电量，总共用电量
+     */
+    @GetMapping("/getDayElectric")
+    public void getDayElectric() throws IOException, ParseException {
+        String srcPath = "C:\\Users\\12825\\Documents\\WeChat Files\\wxid_piv5b666a92f22\\FileStorage\\File\\2020-03\\106_A(1).csv";
+        String separator = ",";
+        List<csvDate> csvDates = CsvUtils.loadDate(srcPath, separator);
+        csvService.getDayElectric(csvDates);
+
     }
 }
