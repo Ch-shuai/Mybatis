@@ -16,5 +16,5 @@ public interface MaterialService {
 
     Map<Integer, Object> getMap();
 
-    String addData();
+
 }

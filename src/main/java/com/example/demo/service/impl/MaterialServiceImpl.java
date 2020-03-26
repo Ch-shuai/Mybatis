@@ -51,15 +51,4 @@ public class MaterialServiceImpl implements MaterialService {
         return map;
     }
 
-    @Override
-    public String addData() {
-
-        String result = "true";
-        Random random = new Random();
-        for(int i =1;i<=1000;i++){
-            TestElectric testElectric = new TestElectric(i, random.nextInt(10000), random.nextInt(100000), random.nextInt(10000));
-            materialDao.addarr(testElectric);
-        }
-        return result;
-    }
 }

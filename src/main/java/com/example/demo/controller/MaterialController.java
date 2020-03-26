@@ -39,10 +39,4 @@ public class MaterialController {
         Map<Integer,Object> map = materialService.getMap();
         return map;
     }
-    @RequestMapping("test")
-    public String addDATA(){
-        String result = materialService.addData();
-        return result;
-    }
-
 }

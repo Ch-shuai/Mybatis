@@ -13,16 +13,9 @@ import lombok.Data;
 @Data
 public class TestElectric {
 
-    private int id;
-    private Integer MaxElectric;
-    private Integer MinElectric;
-    private Integer SumElectric;
+    private Long MaxElectric;
+    private Long MinElectric;
+    private Long SumElectric;
+    private Long AvgElectric;
 
-
-    public TestElectric(int id, Integer maxElectric, Integer minElectric, Integer sumElectric) {
-        this.id = id;
-        MaxElectric = maxElectric;
-        MinElectric = minElectric;
-        SumElectric = sumElectric;
-    }
 }
