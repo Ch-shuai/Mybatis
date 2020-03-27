@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.TestElectric;
 import com.example.demo.entity.csvDate;
 import com.example.demo.service.CsvService;
 import com.example.demo.utils.CsvUtils;
@@ -37,11 +38,16 @@ public class CsvController {
      *     一天中获取最大用电量，最小用电量，平均用电量，总共用电量
      */
     @GetMapping("/getDayElectric")
-    public void getDayElectric() throws IOException, ParseException {
-        String srcPath = "C:\\Users\\12825\\Documents\\WeChat Files\\wxid_piv5b666a92f22\\FileStorage\\File\\2020-03\\106_A(1).csv";
+    public TestElectric getDayElectric() throws IOException, ParseException {
+        String srcPath = "C:\\Users\\bjkf0\\Documents\\WeChat Files\\wxid_piv5b666a92f22\\FileStorage\\File\\2020-03\\106_A(1).csv";
         String separator = ",";
         List<csvDate> csvDates = CsvUtils.loadDate(srcPath, separator);
-        csvService.getDayElectric(csvDates);
-
+        TestElectric testElectric = csvService.getDayElectric(csvDates);
+        return testElectric;
     }
+
+    /**
+     * 获取一个月内数据
+     *
+     */
 }
