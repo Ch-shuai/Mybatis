@@ -59,6 +59,18 @@ public class CsvServiceImpl implements CsvService {
         return testElectric ;
 
     }
+    public String getIntervalTime(List<csvDate> csvDates) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (csvDate csvDate : csvDates) {
+            String date = csvDate.getDate();
+            Date csvDateTime = simpleDateFormat.parse(date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(csvDateTime);
+            int i = cal.get(Calendar.YEAR);
+        }
+
+        return null;
+    }
 
 
 }

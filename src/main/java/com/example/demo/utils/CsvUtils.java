@@ -35,7 +35,7 @@ public class CsvUtils {
             CSVParser csvParser = new CSVParserBuilder().withSeparator('\t').build();
             CSVReader reader = new CSVReaderBuilder(is).withCSVParser(csvParser).build();
             //除去第一行
-            String[] strings = reader.readNext();
+            reader.readNext();
             //读取下面的信息
             List<String[]> readList = reader.readAll();
             for (int i = 0; i <= readList.size() - 1; i++) {
