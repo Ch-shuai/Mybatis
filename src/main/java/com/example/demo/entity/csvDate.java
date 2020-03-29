@@ -12,6 +12,6 @@ import java.util.Date;
  */
 @Data
 public class csvDate {
-    private String date;
+    private Date date;
     private String number;
 }
