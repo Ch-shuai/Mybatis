@@ -1,21 +1,16 @@
 package com.example.demo.utils;
+import com.example.demo.entity.CsvDate;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import org.springframework.util.StringUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -194,9 +189,6 @@ public class CSVUtils {
             }
         }
 
-
-
-
         InputStream in = null;
         try {
             in = new FileInputStream(outPutPath+fileName+".csv");
@@ -228,77 +220,87 @@ public class CSVUtils {
     }
 
     /**
-     * 删除该目录filePath下的所有文件
-     * @param filePath
-     *      文件目录路径
+     * 获取当前月的第一天
+     * @param month
+     * @return
      */
-    public static void deleteFiles(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
-                    files[i].delete();
-                }
-            }
-        }
+    public static String getFirstDayOfMonth(int month) {
+        Calendar cal = Calendar.getInstance();
+        // 设置月份
+        cal.set(Calendar.MONTH, month - 1);
+        // 获取某月最小天数
+        int firstDay = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
+        // 设置日历中月份的最小天数
+        cal.set(Calendar.DAY_OF_MONTH, firstDay);
+        // 格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String firstDayOfMonth = sdf.format(cal.getTime())+" 00:00:00";
+        return firstDayOfMonth;
     }
-
     /**
-     * 删除单个文件
-     * @param filePath
-     *     文件目录路径
-     * @param fileName
-     *     文件名称
+     * 获得该月最后一天
+     *
+     * @param month
+     * @return
      */
-    public static void deleteFile(String filePath, String fileName) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
-                    if (files[i].getName().equals(fileName)) {
-                        files[i].delete();
-                        return;
-                    }
-                }
-            }
+    public static String getLastDayOfMonth(int month) {
+        Calendar cal = Calendar.getInstance();
+        // 设置月份
+        cal.set(Calendar.MONTH, month - 1);
+        // 获取某月最大天数
+        int lastDay=0;
+        //2月的平年瑞年天数
+        if(month==2) {
+            lastDay = cal.getLeastMaximum(Calendar.DAY_OF_MONTH);
+        }else {
+            lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
+        // 设置日历中月份的最大天数
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        // 格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String lastDayOfMonth = sdf.format(cal.getTime())+" 23:59:59";
+        return lastDayOfMonth;
     }
-
     /**
-     * 测试数据
-     * @param args
+     * 将CSV数据存储到Read,   GBK编码
+     * @return
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static void main(String[] args) {
-        List exportData = new ArrayList<Map>();
-        Map row1 = new LinkedHashMap<String, String>();
-        row1.put("1", "11");
-        row1.put("2", "12");
-        row1.put("3", "13");
-        row1.put("4", "14");
-        exportData.add(row1);
-        row1 = new LinkedHashMap<String, String>();
-        row1.put("1", "21");
-        row1.put("2", "22");
-        row1.put("3", "23");
-        row1.put("4", "24");
-        exportData.add(row1);
-        LinkedHashMap map = new LinkedHashMap();
+    public static List<CsvDate> loadDate(String srcPath, String separator) throws IOException {
 
-        //设置列名
-        map.put("1", "第一列名称");
-        map.put("2", "第二列名称");
-        map.put("3", "第三列名称");
-        map.put("4", "第四列名称");
-        //这个文件上传到路径，可以配置在数据库从数据库读取，这样方便一些！
-        String path = "E:/";
 
-        //文件名=生产的文件名称+时间戳
-        String fileName = "文件导出";
-        File file = CSVUtils.createCSVFile(exportData, map, path, fileName);
-        String fileName2 = file.getName();
-        System.out.println("文件名称：" + fileName2);
+        ArrayList<CsvDate> csvDataList = new ArrayList<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        //设置读入的时候编码格式，CSVWriter.DEFAULT_SEPARATOR设置","分割
+        try {
+            InputStreamReader is = new InputStreamReader(new FileInputStream(new File(srcPath)), "GBK");
+            //将CSV文件转换为Bean对象
+            CSVParser csvParser = new CSVParserBuilder().withSeparator('\t').build();
+            CSVReader reader = new CSVReaderBuilder(is).withCSVParser(csvParser).build();
+            //除去第一行
+            reader.readNext();
+            //读取下面的信息
+            List<String[]> readList = reader.readAll();
+            for (int i = 0; i <= readList.size() - 1; i++) {
+                String[] strings1 = readList.get(i);
+                CsvDate csvDate = new CsvDate();
+                Date parse = simpleDateFormat.parse(strings1[0]);
+                csvDate.setDate(parse);
+                String s = strings1[1];
+                String number = s.replace(",", "");
+                csvDate.setNumber(number);
+                csvDataList.add(csvDate);
+            }
+        } catch (
+                UnsupportedEncodingException | ParseException e) {
+            e.printStackTrace();
+        }
+        //排序的结果是
+        //这是第0的数据csvDate(date=2018-01-01 23:45:00, number=20.0)
+        //这是第1的数据csvDate(date=2018-01-01 23:30:00, number=18.4)
+        csvDataList.sort((t1,t2) -> t2.getDate().compareTo(t1.getDate()));
+        return csvDataList;
     }
+
 }

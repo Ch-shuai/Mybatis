@@ -1,11 +1,13 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.CsvDate;
 import com.example.demo.entity.TestElectric;
-import com.example.demo.entity.csvDate;
 import com.example.demo.service.CsvService;
 import com.example.demo.utils.CSVUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,88 +17,95 @@ import java.util.*;
  *
  * @author Ch-shuai
  * @Description
+ *      使用Calendar时，月份从0开始计算，所以需要+1
  */
 @Service
 public class CsvServiceImpl implements CsvService {
 
     @Override
-    public TestElectric getDayElectric(List<csvDate> csvDatas) throws ParseException {
+    public TestElectric getDayElectric(List<CsvDate> csvDatas) throws ParseException {
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        TestElectric testElectric = new TestElectric();
         // 生效时间
         Date effectivetime = simpleDateFormat.parse("2018-1-1 00:00:00");
         Calendar beginTime = Calendar.getInstance();
         beginTime.setTime(effectivetime);
         // 失效时间
-        Date invalidtime = simpleDateFormat.parse("2018-1-1 23:59:00");
+        Date invalidtime = simpleDateFormat.parse("2018-5-1 23:59:00");
         Calendar endTime = Calendar.getInstance();
         endTime.setTime(invalidtime);
         //对比时间
         Calendar estimateTime  = Calendar.getInstance();
-        List<csvDate> adaptDate = new ArrayList<>();
-        for (csvDate csvDateMessage : csvDatas) {
+        //创建一个空数组
+        List<CsvDate> adaptDate = new ArrayList<>();
+        for (CsvDate csvDateMessage : csvDatas) {
             Date csvDateMessageDate = csvDateMessage.getDate();
             estimateTime.setTime(csvDateMessageDate);
             if (estimateTime.after(beginTime) && estimateTime.before(endTime)) {
                 adaptDate.add(csvDateMessage);
             }
         }
-        for(int i = 0;i<adaptDate.size()-1;i++){
-            System.out.println("这是第" + i + "的数据" + adaptDate.get(i));
-        }
 
-        csvDate csvDateMax = adaptDate.stream().max(Comparator.comparing(com.example.demo.entity.csvDate::getNumber)).get();
-        csvDate csvDateMin = adaptDate.stream().min(Comparator.comparing(com.example.demo.entity.csvDate::getNumber)).get();
-        Double numberSum = 0D;
-        for(int i = 0 ; i<= adaptDate.size()-1;i++){
-            csvDate csvDate = adaptDate.get(i);
-            Double eletricNumber = Double.valueOf(csvDate.getNumber());
-            numberSum += eletricNumber;
-        }
-        Double numberAvg = numberSum / Double.valueOf(adaptDate.size() );
-        testElectric.setMaxElectric(Double.valueOf(csvDateMax.getNumber()));
-        testElectric.setMinElectric(Double.valueOf(csvDateMin.getNumber()));
-        testElectric.setSumElectric(numberSum);
-        testElectric.setAvgElectric(numberAvg);
-        return testElectric ;
+        return getResult(adaptDate);
 
     }
 
-    private List<csvDate> sortList(List<csvDate> csvDatas) throws ParseException {
+    @Override
+    public void sortList(List<CsvDate> csvDatas, String date) throws ParseException {
 
-        String titles = "date,number";
-        String keys = "date,string";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         //距离现在日期最近的数据
-        csvDate newData = csvDatas.get(0);
+        CsvDate newData = csvDatas.get(0);
         Date newDatadate = newData.getDate();
         Calendar newInstance = Calendar.getInstance();
         newInstance.setTime(newDatadate);
-        int newYear = newInstance.get(Calendar.YEAR);
-        System.out.println("距离现在日期最近的数据newYear" + newDatadate + "newYear" + newYear);
 
-        //距离现在日期最远的数据
-        csvDate oldData = csvDatas.get(csvDatas.size()-1);
-        Calendar oldInstance = Calendar.getInstance();
-        oldInstance.setTime(oldData.getDate());
-        int oldYear = oldInstance.get(Calendar.YEAR);
-        System.out.println("距离现在日期最远的数据newYear" + oldData.getDate() + "newYear" + newYear);
+        Date parse = simpleDateFormat.parse(date);
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(parse);
+        int month = instance.get(Calendar.MONTH);
+        //获取当前月的第一天
+        String firstDayOfMonth = CSVUtils.getFirstDayOfMonth(month);
+        //获取当前月的最后一天
+        String lastDayOfMonth = CSVUtils.getLastDayOfMonth(month);
 
-        int year = newYear-oldYear;
-        System.out.println(year);
-        for (int i = 0;i<=year;i++){
-            if (i == 0){
-                System.out.println("这个list记载的数据是同一年");
-            }
-            List<csvDate> nextYearList = new ArrayList<>();
-            int nextYear = oldYear + i;
-            for (csvDate csvData : csvDatas) {
-                nextYearList.add(csvData);
-                CSVUtils.createCSVFile(nextYearList,)
-            }
+    }
+
+    /**
+     * 根据时间筛选过的list
+     * @param adaptDate
+     * @return
+     */
+    private TestElectric getResult(List<CsvDate> adaptDate) {
+        TestElectric testElectric = new TestElectric();
+        CsvDate csvDateMax = adaptDate.stream().max(Comparator.comparing(CsvDate::getNumber)).get();
+        CsvDate csvDateMin = adaptDate.stream().min(Comparator.comparing(CsvDate::getNumber)).get();
+        double numberSum = 0D;
+        for(int i = 0 ; i<= adaptDate.size()-1;i++){
+            CsvDate csvDate = adaptDate.get(i);
+            double eletricNumber = Double.parseDouble(csvDate.getNumber());
+            numberSum += eletricNumber;
         }
-        return null;
+        double numberAvg = numberSum / (double) adaptDate.size();
+        double maxNumber = Double.parseDouble(csvDateMax.getNumber());
+        double minNumber = Double.parseDouble(csvDateMin.getNumber());
+
+        BigDecimal bigDecimal = new BigDecimal(numberAvg).setScale(2, RoundingMode.HALF_UP);
+        double avgDouble = bigDecimal.doubleValue();
+        BigDecimal sumDecimal = new BigDecimal(numberSum).setScale(2, RoundingMode.HALF_UP);
+        double sumDouble = sumDecimal.doubleValue();
+        BigDecimal maxDecimal = new BigDecimal(maxNumber).setScale(2, RoundingMode.HALF_UP);
+        double maxDouble = maxDecimal.doubleValue();
+        BigDecimal minDecimal = new BigDecimal(minNumber).setScale(2, RoundingMode.HALF_UP);
+        double minDouble = sumDecimal.doubleValue();
+
+        testElectric.setMaxElectric(maxDouble);
+        testElectric.setMinElectric(minDouble);
+        testElectric.setSumElectric(sumDouble);
+        testElectric.setAvgElectric(avgDouble);
+        return testElectric ;
     }
 
 }
