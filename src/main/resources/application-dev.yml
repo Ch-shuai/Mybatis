@@ -23,10 +23,11 @@ spring:
         min-idle: 0
     # 连接超时时间（毫秒）
     timeout: 1000
+
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   #指定POJO扫描包来让mybatis自动扫描到自定义POJO
   type-aliases-package: com.example.demo.entity
   configuration:
     map-underscore-to-camel-case: true
-

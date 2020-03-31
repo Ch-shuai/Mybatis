@@ -1,6 +1,6 @@
 server:
   port: 7070
-spring:
+  address: 127.0.0.1
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:D:/sqlite/SQLite_test.db

@@ -11,7 +11,7 @@ import java.util.Date;
  * @Description
  */
 @Data
-public class csvDate {
+public class CsvDate {
     private Date date;
     private String number;
 }

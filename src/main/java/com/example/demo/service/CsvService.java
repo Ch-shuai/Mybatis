@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.CsvDate;
 import com.example.demo.entity.TestElectric;
-import com.example.demo.entity.csvDate;
 
 import java.text.ParseException;
 import java.util.List;
@@ -13,5 +13,5 @@ import java.util.List;
  * @Description
  */
 public interface CsvService {
-    TestElectric getDayElectric(List<csvDate> csvDatas) throws ParseException;
+
 }

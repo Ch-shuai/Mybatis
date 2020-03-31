@@ -1,21 +1,15 @@
 package com.example.demo.utils;
+import joinery.DataFrame;
+import org.apache.poi.hssf.record.DVALRecord;
 import org.springframework.util.StringUtils;
+import org.w3c.dom.ls.LSOutput;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +22,32 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CSVUtils {
 
+    /**
+     * 获取dateframe数据
+     * @param src
+     */
+    public static void getDateFrame(String src) {
+        try {
+
+            DataFrame<Object> dataFrame = DataFrame.readCsv(src).retain("date", "number").groupBy(row->function(row));
+            System.out.println(dataFrame);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Integer function(List<Object> row) {
+        Calendar instance = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Integer month = null;
+        try {
+            instance.setTime(simpleDateFormat.parse(row.get(0).toString()));
+            month = instance.get(Calendar.MONTH);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return month;
+    }
 
     /**
      * 功能说明：获取UTF-8编码文本文件开头的BOM签名。
@@ -194,9 +214,6 @@ public class CSVUtils {
             }
         }
 
-
-
-
         InputStream in = null;
         try {
             in = new FileInputStream(outPutPath+fileName+".csv");
@@ -228,77 +245,47 @@ public class CSVUtils {
     }
 
     /**
-     * 删除该目录filePath下的所有文件
-     * @param filePath
-     *      文件目录路径
+     * 获取当前月的第一天
+     * @param month
+     * @return
      */
-    public static void deleteFiles(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
-                    files[i].delete();
-                }
-            }
-        }
+    public static String getFirstDayOfMonth(int month) {
+        Calendar cal = Calendar.getInstance();
+        // 设置月份
+        cal.set(Calendar.MONTH, month - 1);
+        // 获取某月最小天数
+        int firstDay = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
+        // 设置日历中月份的最小天数
+        cal.set(Calendar.DAY_OF_MONTH, firstDay);
+        // 格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String firstDayOfMonth = sdf.format(cal.getTime())+" 00:00:00";
+        return firstDayOfMonth;
     }
-
     /**
-     * 删除单个文件
-     * @param filePath
-     *     文件目录路径
-     * @param fileName
-     *     文件名称
+     * 获得该月最后一天
+     *
+     * @param month
+     * @return
      */
-    public static void deleteFile(String filePath, String fileName) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
-                    if (files[i].getName().equals(fileName)) {
-                        files[i].delete();
-                        return;
-                    }
-                }
-            }
+    public static String getLastDayOfMonth(int month) {
+        Calendar cal = Calendar.getInstance();
+        // 设置月份
+        cal.set(Calendar.MONTH, month - 1);
+        // 获取某月最大天数
+        int lastDay=0;
+        //2月的平年瑞年天数
+        if(month==2) {
+            lastDay = cal.getLeastMaximum(Calendar.DAY_OF_MONTH);
+        }else {
+            lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
+        // 设置日历中月份的最大天数
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        // 格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String lastDayOfMonth = sdf.format(cal.getTime())+" 23:59:59";
+        return lastDayOfMonth;
     }
 
-    /**
-     * 测试数据
-     * @param args
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static void main(String[] args) {
-        List exportData = new ArrayList<Map>();
-        Map row1 = new LinkedHashMap<String, String>();
-        row1.put("1", "11");
-        row1.put("2", "12");
-        row1.put("3", "13");
-        row1.put("4", "14");
-        exportData.add(row1);
-        row1 = new LinkedHashMap<String, String>();
-        row1.put("1", "21");
-        row1.put("2", "22");
-        row1.put("3", "23");
-        row1.put("4", "24");
-        exportData.add(row1);
-        LinkedHashMap map = new LinkedHashMap();
-
-        //设置列名
-        map.put("1", "第一列名称");
-        map.put("2", "第二列名称");
-        map.put("3", "第三列名称");
-        map.put("4", "第四列名称");
-        //这个文件上传到路径，可以配置在数据库从数据库读取，这样方便一些！
-        String path = "E:/";
-
-        //文件名=生产的文件名称+时间戳
-        String fileName = "文件导出";
-        File file = CSVUtils.createCSVFile(exportData, map, path, fileName);
-        String fileName2 = file.getName();
-        System.out.println("文件名称：" + fileName2);
-    }
 }
