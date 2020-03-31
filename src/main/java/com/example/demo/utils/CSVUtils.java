@@ -1,12 +1,9 @@
 package com.example.demo.utils;
 import joinery.DataFrame;
-import org.apache.poi.hssf.record.DVALRecord;
 import org.springframework.util.StringUtils;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,7 +27,8 @@ public class CSVUtils {
         try {
 
             DataFrame<Object> dataFrame = DataFrame.readCsv(src).retain("date", "number").groupBy(row->function(row));
-            System.out.println(dataFrame);
+            List<Object> date = dataFrame.col("date");
+            System.out.println(date.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,14 +37,15 @@ public class CSVUtils {
     private static Integer function(List<Object> row) {
         Calendar instance = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Integer month = null;
+        Integer day = null;
         try {
-            instance.setTime(simpleDateFormat.parse(row.get(0).toString()));
-            month = instance.get(Calendar.MONTH);
+            instance.setTime(simpleDateFormat.parse(row.get(1).toString()));
+            day = instance.get(Calendar.DATE);
+            System.out.println(day);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return month;
+        return day;
     }
 
     /**
