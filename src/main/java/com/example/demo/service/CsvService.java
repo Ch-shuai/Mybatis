@@ -13,7 +13,5 @@ import java.util.List;
  * @Description
  */
 public interface CsvService {
-    TestElectric getDayElectric(List<CsvDate> csvDatas) throws ParseException;
 
-    void sortList(List<CsvDate> csvDatas, String date) throws ParseException;
 }

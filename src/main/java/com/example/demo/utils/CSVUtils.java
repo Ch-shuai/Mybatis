@@ -1,13 +1,12 @@
 package com.example.demo.utils;
-import com.example.demo.entity.CsvDate;
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import joinery.DataFrame;
+import org.apache.poi.hssf.record.DVALRecord;
 import org.springframework.util.StringUtils;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,6 +22,32 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CSVUtils {
 
+    /**
+     * 获取dateframe数据
+     * @param src
+     */
+    public static void getDateFrame(String src) {
+        try {
+
+            DataFrame<Object> dataFrame = DataFrame.readCsv(src).retain("date", "number").groupBy(row->function(row));
+            System.out.println(dataFrame);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Integer function(List<Object> row) {
+        Calendar instance = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Integer month = null;
+        try {
+            instance.setTime(simpleDateFormat.parse(row.get(0).toString()));
+            month = instance.get(Calendar.MONTH);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return month;
+    }
 
     /**
      * 功能说明：获取UTF-8编码文本文件开头的BOM签名。
@@ -261,46 +286,6 @@ public class CSVUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String lastDayOfMonth = sdf.format(cal.getTime())+" 23:59:59";
         return lastDayOfMonth;
-    }
-    /**
-     * 将CSV数据存储到Read,   GBK编码
-     * @return
-     */
-    public static List<CsvDate> loadDate(String srcPath, String separator) throws IOException {
-
-
-        ArrayList<CsvDate> csvDataList = new ArrayList<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        //设置读入的时候编码格式，CSVWriter.DEFAULT_SEPARATOR设置","分割
-        try {
-            InputStreamReader is = new InputStreamReader(new FileInputStream(new File(srcPath)), "GBK");
-            //将CSV文件转换为Bean对象
-            CSVParser csvParser = new CSVParserBuilder().withSeparator('\t').build();
-            CSVReader reader = new CSVReaderBuilder(is).withCSVParser(csvParser).build();
-            //除去第一行
-            reader.readNext();
-            //读取下面的信息
-            List<String[]> readList = reader.readAll();
-            for (int i = 0; i <= readList.size() - 1; i++) {
-                String[] strings1 = readList.get(i);
-                CsvDate csvDate = new CsvDate();
-                Date parse = simpleDateFormat.parse(strings1[0]);
-                csvDate.setDate(parse);
-                String s = strings1[1];
-                String number = s.replace(",", "");
-                csvDate.setNumber(number);
-                csvDataList.add(csvDate);
-            }
-        } catch (
-                UnsupportedEncodingException | ParseException e) {
-            e.printStackTrace();
-        }
-        //排序的结果是
-        //这是第0的数据csvDate(date=2018-01-01 23:45:00, number=20.0)
-        //这是第1的数据csvDate(date=2018-01-01 23:30:00, number=18.4)
-        csvDataList.sort((t1,t2) -> t2.getDate().compareTo(t1.getDate()));
-        return csvDataList;
     }
 
 }
