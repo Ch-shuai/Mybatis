@@ -2,6 +2,8 @@ package com.example.demo.web.result;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+
 /**
  * 2020/3/11
  *
@@ -17,16 +19,9 @@ public class Result {
      */
 
     private int code;
+    private String msg;
+    private int count;
+    private ArrayList data;
 
-    public Result(int code) {
-        this.code = code;
-    }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 }
