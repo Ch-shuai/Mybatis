@@ -37,7 +37,7 @@ public class CsvController {
 
     @GetMapping("/getDayElectric")
     public void getDayElectric(){
-        String src = "C:\\Users\\12825\\Documents\\WeChat Files\\wxid_piv5b666a92f22\\FileStorage\\File\\2020-03\\106_A(1).csv";
+        String src = "C:\\Users\\bjkf0\\Documents\\WeChat Files\\wxid_piv5b666a92f22\\FileStorage\\File\\2020-03\\106_A(1).csv";
         CSVUtils.getDateFrame(src);
     }
 
@@ -45,14 +45,15 @@ public class CsvController {
     public void testTime(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date parse = simpleDateFormat.parse("2019-01-01 00:00:00");
+            Date parse = simpleDateFormat.parse("2019-05-01 00:00:00");
             Calendar instance = Calendar.getInstance();
             instance.setTime(parse);
             int year = instance.get(Calendar.YEAR);
             int date = instance.get(Calendar.DATE);
             int month = instance.get(Calendar.MONTH);
+            int week = instance.get(Calendar.WEEK_OF_YEAR);
 
-            System.out.println("年+" + year + "月+" + month + "日+" + date);
+            System.out.println("年+" + year + "月+" + month + "日+" + date + "周" + week);
         } catch (ParseException e) {
             e.printStackTrace();
         }

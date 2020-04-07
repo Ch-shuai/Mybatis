@@ -25,10 +25,10 @@ public class CSVUtils {
      */
     public static void getDateFrame(String src) {
         try {
-
-            DataFrame<Object> dataFrame = DataFrame.readCsv(src).retain("date", "number").groupBy(row->function(row));
-            List<Object> date = dataFrame.col("date");
-            System.out.println(date.size());
+            DataFrame<Object> dataFrame = DataFrame.readCsv(src).retain("date", "number").groupBy(row->function(row)).mean();
+            System.out.println(dataFrame);
+            DataFrame<Object> df = DataFrame.readCsv(src).retain("date", "number").groupBy(row->function(row)).mean().max();
+            System.out.println(df);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,15 +37,14 @@ public class CSVUtils {
     private static Integer function(List<Object> row) {
         Calendar instance = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Integer day = null;
+        Integer YEAR = null;
         try {
-            instance.setTime(simpleDateFormat.parse(row.get(1).toString()));
-            day = instance.get(Calendar.DATE);
-            System.out.println(day);
+            instance.setTime(simpleDateFormat.parse(row.get(0).toString()));
+            YEAR = instance.get(Calendar.YEAR);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return day;
+        return YEAR;
     }
 
     /**
