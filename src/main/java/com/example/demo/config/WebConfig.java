@@ -1,29 +1,35 @@
 package com.example.demo.config;
 
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
+
+import java.util.List;
 
 /**
- * 2020/3/31
- *
  * @author wuzhanhao
- * <p>
- * description:
- *
- *      @EnableWebMvc注解的类自身来实现WebMvcConfigurer接口，
- *          然后在该类中重写需要覆盖的默认配置所对应的方法或者添加相关配置
  */
-
 @Configuration
-@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
+
+    /**
+     * 新增一个拦截器，由于拦截器之前有定义
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TestInterceptor());
+        registry.addInterceptor(new COROSConfig()).addPathPatterns("/**");
+    }
+
+    /**
+     * 自定义参数解析器
+     * @param resolvers
+     */
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new EmployeeArgumentResolver());
     }
 }

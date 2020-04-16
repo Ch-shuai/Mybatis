@@ -17,4 +17,5 @@ import java.util.ArrayList;
 public interface LayuiDao extends BaseMapper<article> {
 
     ArrayList<article> getPost();
+
 }

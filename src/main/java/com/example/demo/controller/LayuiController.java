@@ -4,6 +4,7 @@ import com.example.demo.service.LayuiService;
 import com.example.demo.web.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,4 +41,14 @@ public class LayuiController {
         return result;
     }
 
+    @PostMapping("/gongzi")
+    public void getLast(Integer gongzi){
+        Integer fangzu = 1500;
+        Integer jiaotong = 12*25;
+        Integer huabei = 500;
+
+        Integer chifan = (5+15+15)*25;
+        Integer Last = gongzi-fangzu-jiaotong-huabei-chifan;
+        System.out.println(Last);
+    }
 }

@@ -8,4 +8,5 @@
     <select id="getPost" resultType="com.example.demo.entity.article">
         select * from article
     </select>
+
 </mapper>

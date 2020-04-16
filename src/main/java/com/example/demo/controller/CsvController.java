@@ -25,7 +25,7 @@ import java.util.Date;
  *      排序过后的数据，时间最接近现在 的在list最前面
  */
 @RestController
-@RequestMapping("Csv")
+@RequestMapping("csv")
 public class CsvController {
 
     private final CsvService csvService;

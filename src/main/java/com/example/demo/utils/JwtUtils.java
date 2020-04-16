@@ -1,6 +1,12 @@
 package com.example.demo.utils;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.demo.entity.Employee;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +15,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,107 +32,123 @@ import java.util.Map;
  */
 public class JwtUtils {
 
-    /**
-     * token 过期时间，单位：秒，当前设定时间为1天
-     */
-    private static final Long TOKEN_EXPIRED_TIME = 60*60*24L;
+    // 设置过期时间为8个小时
+    private static final long EXPIRE_TIME = 8 * 60 * 60 * 1000;
+
+    private static final String USER_HEAD = "user";
 
     /**
-     * jwt加密解密密钥，自行赋值，暂且使用随机数16位
+     * 校验token是否正确
+     *
+     * @param token  密钥
+     * @param secret 用户的密码
+     * @return 是否正确
      */
-    private static  final String JWT_SECRET = "1AsdadSaS123daXX";
-
-    public static final String jwtId = "tokenId";
-
-    /**
-     * 根据userId和openId生成token
-     */
-
-    public static String generateToken(HashMap map){
-
-        return createJWT(map,TOKEN_EXPIRED_TIME);
-    }
-
-    public static String createJWT(Map<String,Object> claims, Long time){
-        //指定签名算法
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Date now = new Date(System.currentTimeMillis());
-        //由字符串生成加密key
-        SecretKey secretKey = generalKey();
-
-        //生成JWT时间
-        long nowMillis = System.currentTimeMillis();
-        //下面就是在为payload(有效载荷，有效负荷，有效载重)添加各种标准声明和私有声明
-             //JWT构建器
-        JwtBuilder builder = Jwts.builder()
-             //如果有私有声明，一定要先设置自己创建的私有声明，这个是给builder的clian赋值，一旦写在标准声明赋值之后，就覆盖了之前那些标准声明
-                .setClaims(claims)
-             //JWT的签发时间
-                .setIssuedAt(now)
-             //设置header
-                .setHeaderParam("alg","HS256")
-             //设置签名使用的签名算法和签名使用的，密钥
-                .signWith(signatureAlgorithm,secretKey);
-        if (time > 0){
-            //过期时间 = 当前时间 + token过期时间
-           Long expMillis = nowMillis + time;
-            Date date = new Date(expMillis);
-            //设置过期时间
-            builder.setExpiration(date);
+    public static boolean verify(String token, String username, String secret) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256( secret );
+            JWTVerifier verifier = JWT.require( algorithm )
+                    .withClaim( "username", username )
+                    .build();
+            DecodedJWT jwt = verifier.verify( token );
+            return true;
+        } catch (Exception exception) {
+            return false;
         }
-        //就开始压缩为xxxxxxxxxxxxxx.xxxxxxxxxxxxxxx.xxxxxxxxxxxxx这样的jwt
-        return builder.compact();
 
     }
 
+    /**
+     * 获得token中的信息无需secret解密也能获得
+     *
+     * @return token中包含的用户名
+     */
+    public static String getUsername(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode( token );
+            return jwt.getClaim( "username" ).asString();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
 
     /**
-     * 由字符串生成加密key
+     * 根据token 获取用户的具体信息
+     *
+     * @param token
      * @return
      */
-    private static SecretKey generalKey() {
-        String stringKey = JWT_SECRET;
-        //使用Base64去对密码进行解码
-        byte[] encodeKey = Base64.decodeBase64(stringKey);
-        //私密密钥设置
-        SecretKey key = new SecretKeySpec(encodeKey, 0, encodeKey.length, "HS256");
-        return key;
+    public static Employee getEmployee(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode( token );
+            return JsonUtils.JSONStringToObj( jwt.getClaim( USER_HEAD ).asString(), Employee.class );
+        } catch (JWTDecodeException e) {
+            return null;
+        }
     }
 
     /**
-     * 验证jwt,token
-     *      JWT Claims
+     * 生成签名,8hou后过期
      *
-     *      “iss” (issuer)  发行人
-     *
-     *      “sub” (subject)  主题
-     *
-     *      “aud” (audience) 接收方 用户
-     *
-     *      “exp” (expiration time) 到期时间
-     *
-     *      “nbf” (not before)  在此之前不可用
-     *
-     *      “iat” (issued at)  jwt的签发时间
-     *
-     *      “jti” (JWT ID)  jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
+     * @param username 用户名,这里可以将用户信息JSON一下,缓存起来
+     * @param secret   用户的密码
+     * @return 加密的token
      */
-    public static Claims verifyJwt(String token){
-        //签名密钥 和生成密钥一样
-        SecretKey key = generalKey();
-        Claims claims;
-        try{
-            //parser()方法传入一个JWT字符串，返回一个JWT对象
-            claims = Jwts.parser()
-                    //用于设置JWT的签名key，用户后面对JWT进行解析
-                    .setSigningKey(key)
-                    //荷载为Claims(即Json),已签名
-                    .parseClaimsJws(token)
-                    .getBody();
-        }catch (Exception e){
-            claims = null;
-        }//设置需要解析的jwt
-        return claims;
+    public static String sign(String username, String secret) {
+        try {
+            Date date = new Date( System.currentTimeMillis() + EXPIRE_TIME );
+            Algorithm algorithm = Algorithm.HMAC256( secret );
+            // 附带username信息
+            return JWT.create()
+                    .withClaim( "username", username )
+                    .withExpiresAt( date )
+                    .sign( algorithm );
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
     }
+
+    /**
+     * 校验token是否正确
+     *
+     * @param token    密钥
+     * @param employee 员工
+     * @return 是否正确
+     */
+    public static boolean verify(String token, Employee employee) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256( employee.getPassword() );
+            JWTVerifier verifier = JWT.require( algorithm )
+                    .withClaim( USER_HEAD, JsonUtils.objToJSONString( employee ) )
+                    .build();
+            DecodedJWT jwt = verifier.verify( token );
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
+
+    }
+
+    /**
+     * 将员工信息进行签名摘要加密，放入jwt
+     *
+     * @param employee
+     * @return
+     */
+    public static String sign(Employee employee) {
+        try {
+            //设置token的过期时间
+            Date date = new Date( System.currentTimeMillis() + EXPIRE_TIME );
+            Algorithm algorithm = Algorithm.HMAC256( employee.getPassword() );
+            // 附带username信息
+            return JWT.create()
+                    .withClaim( USER_HEAD, JsonUtils.objToJSONString( employee ) )
+                    .withExpiresAt( date )
+                    .sign( algorithm );
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
+
 
 }

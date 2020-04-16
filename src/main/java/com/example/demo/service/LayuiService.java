@@ -11,4 +11,5 @@ import com.example.demo.web.result.Result;
  */
 public interface LayuiService {
     Result managePost();
+
 }
