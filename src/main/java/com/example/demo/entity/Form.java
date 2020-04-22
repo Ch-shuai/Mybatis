@@ -5,12 +5,12 @@ package com.example.demo.entity;
  *           {"name":"杭州御数信息技术有限公司",
  *           "industry":"信息技术公司",
  *           "price_min":"50","price_max":"60",
+ *           0表示升序，1表示降序
  *           "order":"0",
  *           "quiz1":"浙江","quiz2":"温州","quiz3":"西湖区"}
  */
 public class Form {
      private String name;
-     private String industry;
      private String price_min;
      private String price_max;
      private Integer order;
@@ -22,7 +22,6 @@ public class Form {
     public String toString() {
         return "Form{" +
                 "name='" + name + '\'' +
-                ", industry='" + industry + '\'' +
                 ", price_min='" + price_min + '\'' +
                 ", price_max='" + price_max + '\'' +
                 ", order=" + order +
@@ -35,9 +34,8 @@ public class Form {
     public Form() {
     }
 
-    public Form(String name, String industry, String price_min, String price_max, Integer order, String quiz1, String quiz2, String quiz3) {
+    public Form(String name, String price_min, String price_max, Integer order, String quiz1, String quiz2, String quiz3) {
         this.name = name;
-        this.industry = industry;
         this.price_min = price_min;
         this.price_max = price_max;
         this.order = order;
@@ -52,14 +50,6 @@ public class Form {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
     }
 
     public String getPrice_min() {

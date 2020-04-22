@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dao.GroupDao;
 import com.example.demo.entity.AnalyseResult;
+import com.example.demo.entity.Form;
 import com.example.demo.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<AnalyseResult> getForm() {
-        List<AnalyseResult> analyseResultList = groupDao.getAll();
+    public List<AnalyseResult> getForm(Form form) {
+        List<AnalyseResult> analyseResultList = groupDao.getAll(form);
         return analyseResultList;
     }
 }

@@ -4,7 +4,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dao.GroupDao">
 
-    <select id="getAll" resultType="com.example.demo.entity.AnalyseResult">
-        select * from hzys_test
+    <select id="getAll" resultType="com.example.demo.entity.AnalyseResult" parameterType="com.example.demo.entity.Form">
+        select * from `hzys_test` as `a`
+        <trim prefix="where" prefixOverrides="and">
+            <if test="name != null">
+                and `a`.name like concat('%',#{name},'%')
+            </if>
+            <if test="price_min != null and price_max != null">
+                <!-- &lt;=小于等于，&gt;=大于等于-->
+                and `a`.return_rate_max &lt;= #{price_max}
+                and `a`.return_rate_min &gt;= #{price_min}
+            </if>
+            <if test="price_min != null and price_max == null">
+                <!-- &lt;=小于等于，&gt;=大于等于-->
+                and `a`.return_rate_min &gt;= #{price_min}
+            </if>
+            <if test="price_min == null and price_max != null">
+                    <!-- &lt;=小于等于，&gt;=大于等于-->
+                and `a`.return_rate_max &lt;= #{price_max}
+            </if>
+            <if test="price_min != null and price_max == null">
+                <!-- &lt;=小于等于，&gt;=大于等于-->
+                and `a`.return_rate_min &gt;= #{price_min}
+            </if>
+            <if test="order != null and order == 1">
+                order by `a`.id desc
+            </if>
+
+            <if test="quiz1 !=null">
+
+            </if>
+        </trim>
+
     </select>
 </mapper>

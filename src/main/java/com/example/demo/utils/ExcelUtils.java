@@ -3,7 +3,6 @@ package com.example.demo.utils;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
-import com.example.demo.entity.po.Material;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ import java.util.List;
 
 public class ExcelUtils {
 
-    public static void export(HttpServletResponse response, List<Material> list) {
+    public static void export(HttpServletResponse response, List<?> list) {
 
         ChangeCharset changeCharset = new ChangeCharset();
         // 通过工具类创建writer，默认创建xls格式

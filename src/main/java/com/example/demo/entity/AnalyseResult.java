@@ -18,19 +18,21 @@ public class AnalyseResult {
     //行业
     private String industry;
     //储能单价
-    private Long energyPrice;
+    private Double energyPrice;
     //储能容量
-    private Long energyCapacity;
+    private Double energyCapacity;
     //储能总成本
-    private Long energySaveCost;
+    private Double energySaveCost;
     //需量电费收益
-    private Long energyCost;
+    private Double energyCost;
     //削峰填谷收益
-    private Long energyFillCost;
-    //投资回报率
-    private Double returnRate;
+    private Double energyFillCost;
+    //投资最低回报率
+    private Double returnRateMin;
+    //投资最高回报率
+    private Double returnRateMax;
     //回报周期
-    private Long returnTime;
+    private Double returnTime;
 
     @Override
     public String toString() {
@@ -44,26 +46,10 @@ public class AnalyseResult {
                 ", energySaveCost=" + energySaveCost +
                 ", energyCost=" + energyCost +
                 ", energyFillCost=" + energyFillCost +
-                ", returnRate=" + returnRate +
+                ", returnRateMin=" + returnRateMin +
+                ", returnRateMax=" + returnRateMax +
                 ", returnTime=" + returnTime +
                 '}';
-    }
-
-    public AnalyseResult() {
-    }
-
-    public AnalyseResult(Long id, String name, String calculateWay, String industry, Long energyPrice, Long energyCapacity, Long energySaveCost, Long energyCost, Long energyFillCost, Double returnRate, Long returnTime) {
-        this.id = id;
-        this.name = name;
-        this.calculateWay = calculateWay;
-        this.industry = industry;
-        this.energyPrice = energyPrice;
-        this.energyCapacity = energyCapacity;
-        this.energySaveCost = energySaveCost;
-        this.energyCost = energyCost;
-        this.energyFillCost = energyFillCost;
-        this.returnRate = returnRate;
-        this.returnTime = returnTime;
     }
 
     public Long getId() {
@@ -98,59 +84,85 @@ public class AnalyseResult {
         this.industry = industry;
     }
 
-    public Long getEnergyPrice() {
+    public Double getEnergyPrice() {
         return energyPrice;
     }
 
-    public void setEnergyPrice(Long energyPrice) {
+    public void setEnergyPrice(Double energyPrice) {
         this.energyPrice = energyPrice;
     }
 
-    public Long getEnergyCapacity() {
+    public Double getEnergyCapacity() {
         return energyCapacity;
     }
 
-    public void setEnergyCapacity(Long energyCapacity) {
+    public void setEnergyCapacity(Double energyCapacity) {
         this.energyCapacity = energyCapacity;
     }
 
-    public Long getEnergySaveCost() {
+    public Double getEnergySaveCost() {
         return energySaveCost;
     }
 
-    public void setEnergySaveCost(Long energySaveCost) {
+    public void setEnergySaveCost(Double energySaveCost) {
         this.energySaveCost = energySaveCost;
     }
 
-    public Long getEnergyCost() {
+    public Double getEnergyCost() {
         return energyCost;
     }
 
-    public void setEnergyCost(Long energyCost) {
+    public void setEnergyCost(Double energyCost) {
         this.energyCost = energyCost;
     }
 
-    public Long getEnergyFillCost() {
+    public Double getEnergyFillCost() {
         return energyFillCost;
     }
 
-    public void setEnergyFillCost(Long energyFillCost) {
+    public void setEnergyFillCost(Double energyFillCost) {
         this.energyFillCost = energyFillCost;
     }
 
-    public Double getReturnRate() {
-        return returnRate;
+    public Double getReturnRateMin() {
+        return returnRateMin;
     }
 
-    public void setReturnRate(Double returnRate) {
-        this.returnRate = returnRate;
+    public void setReturnRateMin(Double returnRateMin) {
+        this.returnRateMin = returnRateMin;
     }
 
-    public Long getReturnTime() {
+    public Double getReturnRateMax() {
+        return returnRateMax;
+    }
+
+    public void setReturnRateMax(Double returnRateMax) {
+        this.returnRateMax = returnRateMax;
+    }
+
+    public Double getReturnTime() {
         return returnTime;
     }
 
-    public void setReturnTime(Long returnTime) {
+    public void setReturnTime(Double returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public AnalyseResult() {
+    }
+
+    public AnalyseResult(Long id, String name, String calculateWay, String industry, Double energyPrice, Double energyCapacity, Double energySaveCost, Double energyCost, Double energyFillCost, Double returnRateMin, Double returnRateMax, Double returnTime) {
+        this.id = id;
+        this.name = name;
+        this.calculateWay = calculateWay;
+        this.industry = industry;
+        this.energyPrice = energyPrice;
+        this.energyCapacity = energyCapacity;
+        this.energySaveCost = energySaveCost;
+        this.energyCost = energyCost;
+        this.energyFillCost = energyFillCost;
+        this.returnRateMin = returnRateMin;
+        this.returnRateMax = returnRateMax;
         this.returnTime = returnTime;
     }
 }
