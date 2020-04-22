@@ -4,6 +4,7 @@ import com.example.demo.entity.vo.LoginVo;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,10 +34,10 @@ public class EmployeeController {
      *  2。判断用户是否存在
      *  3。根据shiro来进行权限判断
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     @ResponseBody
-    public String login(@Valid LoginVo loginVo){
-        return employeeService.login(loginVo);
+    public String login(String username ,String password){
+        return null;
     }
 
     /**

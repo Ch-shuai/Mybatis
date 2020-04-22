@@ -1,5 +1,5 @@
 server:
-  port: 7091
+  port: 7090
 spring:
   datasource:
     username: root
