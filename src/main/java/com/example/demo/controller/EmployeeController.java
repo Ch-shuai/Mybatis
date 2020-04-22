@@ -39,5 +39,14 @@ public class EmployeeController {
         return employeeService.login(loginVo);
     }
 
+    /**
+     * 由于前端需要根据状态来进行判断
+     *    data: T;
+     *   status: number;
+     *   statusText: string;
+     *   headers: any;
+     *   config: AxiosRequestConfig;
+     *   request?: any;
+     */
 
 }

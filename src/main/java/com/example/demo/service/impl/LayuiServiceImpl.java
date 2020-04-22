@@ -32,15 +32,7 @@ public class LayuiServiceImpl implements LayuiService {
 
     @Override
     public Result managePost() {
-        Result result = new Result();
-        ArrayList<article> articleList = layuiDao.getPost();
-        if (articleList.size()!=0){
-            result.setCode(0);
-            result.setCount(100);
-            result.setMsg("");
-            result.setData(articleList);
-        }
-        return result;
+        return null;
     }
 
 }

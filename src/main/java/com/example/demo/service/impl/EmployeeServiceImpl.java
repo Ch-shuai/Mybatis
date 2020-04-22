@@ -32,7 +32,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee getUsername(@NotBlank(message = "登陆名称不能为空") String username) {
-        System.out.println(username);
         return employeeDao.selectByName(username);
     }
 
