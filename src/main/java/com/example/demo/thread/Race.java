@@ -32,7 +32,7 @@ public class Race implements Runnable {
             System.out.println(ThreadName+"-->跑了" + i +"步" );
         }
     }
-    public boolean winner(int i){
+    public synchronized boolean winner(int i){
         if (i==100){
             String name = Thread.currentThread().getName();
             System.out.println("winner is" + name);
