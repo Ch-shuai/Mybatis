@@ -23,10 +23,6 @@
                     <!-- &lt;=小于等于，&gt;=大于等于-->
                 and `a`.return_rate_max &lt;= #{price_max}
             </if>
-            <if test="price_min != null and price_max == null">
-                <!-- &lt;=小于等于，&gt;=大于等于-->
-                and `a`.return_rate_min &gt;= #{price_min}
-            </if>
             <if test="order != null and order == 1">
                 order by `a`.id desc
             </if>
