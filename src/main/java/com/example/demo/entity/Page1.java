@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 @Data
-public class Page<T> {
+public class Page1<T> {
 
     /**
      *  分页起始页

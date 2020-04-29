@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.util;
 
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;

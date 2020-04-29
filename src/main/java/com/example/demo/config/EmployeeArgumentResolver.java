@@ -2,7 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.annotation.CurrentEmployee;
 import com.example.demo.entity.Employee;
-import com.example.demo.utils.JwtUtils;
+import com.example.demo.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

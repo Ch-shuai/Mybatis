@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.util;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;

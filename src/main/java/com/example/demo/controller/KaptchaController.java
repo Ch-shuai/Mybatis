@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.redis.RedisService;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.io.IOException;
 @Controller
 @Slf4j
 @RequestMapping("/captcha")
+@Api(description = "生成验证码")
 public class KaptchaController {
 
     @Resource(name = "captchaProducer")

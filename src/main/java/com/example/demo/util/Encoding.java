@@ -1,6 +1,4 @@
-package com.example.demo.utils;
-
-import java.nio.charset.Charset;
+package com.example.demo.util;
 
 /**
  * 2020/3/10

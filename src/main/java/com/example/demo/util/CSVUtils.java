@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.util;
 import joinery.DataFrame;
 import org.springframework.util.StringUtils;
 

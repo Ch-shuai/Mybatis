@@ -10,4 +10,8 @@
         from `t_zjds_oa_employee`
         where `name` = #{name} and status != 0
     </select>
+
+    <select id="getList" resultType="com.example.demo.entity.Employee">
+        select * from t_zjds_oa_employee
+    </select>
 </mapper>

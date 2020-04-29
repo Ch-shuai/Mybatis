@@ -1,12 +1,10 @@
-package com.example.demo.utils;
+package com.example.demo.util;
 
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.TypeHandler;
 
 import java.sql.*;
-
-import static java.sql.JDBCType.VARCHAR;
 
 /**
  * 2020/3/12

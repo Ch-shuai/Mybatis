@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--设置超时时间，它决定驱动等待数据库响应的秒数。参数为任意正整数，未设置默认值-->
+        <setting name="defaultStatementTimeout" value="30"/>
+        <setting name="logImpl" value="LOG4J"/>
+        <setting name="cacheEnabled" value="true" />  <!-- 全局映射器启用缓存 -->
+    </settings>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库-->
+            <property name="helperDialect" value="mysql"/>
+        </plugin>
+    </plugins>
+</configuration>

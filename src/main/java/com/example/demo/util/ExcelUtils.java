@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.util;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.poi.excel.ExcelUtil;
