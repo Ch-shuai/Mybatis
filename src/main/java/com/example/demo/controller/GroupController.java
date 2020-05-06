@@ -42,9 +42,8 @@ public class GroupController extends BaseController {
     @ApiOperation(value = "获取表单组合",notes = "需要前段传递相关数据")
     @ApiImplicitParams({@ApiImplicitParam(name = "name",paramType = "String",value = "公司名字")})
     public Result<TableDataInfo> getForm(@RequestBody Form form){
-        Page<Form> formPage = new Page<>();
-        formPage.setPageNum(1);
-        formPage.setPageSize(11);
+        Page page = new Page();
+        PageHelper.startPage(1,10,true);
         List<AnalyseResult> analyseResultList = groupService.getForm(form);
         PageHelper.startPage(1,12);
         return getDataTable(analyseResultList);
