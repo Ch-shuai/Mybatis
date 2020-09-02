@@ -7,11 +7,9 @@ import com.example.demo.service.EmployeeService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +44,14 @@ public class EmplyeeController {
         data.put("nowPage", pageNo);
         data.put("data", employeeArrayList);
         return data;
+    }
+
+    @PostMapping("/test")
+    public void getEmployee(){
+        ArrayList<Employee> employeeList = employeeService.getEmployeeList();
+        for (Employee employee : employeeList) {
+            System.out.println(employee.toString());
+        }
     }
 
 }

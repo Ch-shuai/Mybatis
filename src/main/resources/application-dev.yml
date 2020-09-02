@@ -4,7 +4,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://127.0.0.1:3306/oa?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: 127.0.0.1
@@ -22,7 +22,12 @@ spring:
         min-idle: 0
     # 连接超时时间（毫秒）
     timeout: 1000
-
+  elasticsearch:
+    jest:
+      username: user
+      password: 198765
+      read-timeout: 3s
+      connection-timeout: 3s
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
