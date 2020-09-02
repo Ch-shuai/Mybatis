@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.CostDao">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Cost">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fengjia" jdbcType="DOUBLE" property="fengjia" />
+    <result column="gujia" jdbcType="DOUBLE" property="gujia" />
+    <result column="jianjia" jdbcType="DOUBLE" property="jianjia" />
+    <result column="xuliang" jdbcType="DOUBLE" property="xuliang" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, fengjia, gujia, jianjia, xuliang
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cost
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cost
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.demo.entity.Cost" useGeneratedKeys="true">
+    insert into cost (fengjia, gujia, jianjia, 
+      xuliang)
+    values (#{fengjia,jdbcType=DOUBLE}, #{gujia,jdbcType=DOUBLE}, #{jianjia,jdbcType=DOUBLE}, 
+      #{xuliang,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.demo.entity.Cost" useGeneratedKeys="true">
+    insert into cost
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fengjia != null">
+        fengjia,
+      </if>
+      <if test="gujia != null">
+        gujia,
+      </if>
+      <if test="jianjia != null">
+        jianjia,
+      </if>
+      <if test="xuliang != null">
+        xuliang,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fengjia != null">
+        #{fengjia,jdbcType=DOUBLE},
+      </if>
+      <if test="gujia != null">
+        #{gujia,jdbcType=DOUBLE},
+      </if>
+      <if test="jianjia != null">
+        #{jianjia,jdbcType=DOUBLE},
+      </if>
+      <if test="xuliang != null">
+        #{xuliang,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.entity.Cost">
+    update cost
+    <set>
+      <if test="fengjia != null">
+        fengjia = #{fengjia,jdbcType=DOUBLE},
+      </if>
+      <if test="gujia != null">
+        gujia = #{gujia,jdbcType=DOUBLE},
+      </if>
+      <if test="jianjia != null">
+        jianjia = #{jianjia,jdbcType=DOUBLE},
+      </if>
+      <if test="xuliang != null">
+        xuliang = #{xuliang,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Cost">
+    update cost
+    set fengjia = #{fengjia,jdbcType=DOUBLE},
+      gujia = #{gujia,jdbcType=DOUBLE},
+      jianjia = #{jianjia,jdbcType=DOUBLE},
+      xuliang = #{xuliang,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getCost" resultType="com.example.demo.entity.Cost">
+    select * from cost;
+  </select>
+</mapper>

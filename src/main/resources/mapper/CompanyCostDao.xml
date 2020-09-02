@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.CompanyCostDao">
+
+    <insert id="insertList">
+        insert into company_cost
+        values
+        <foreach collection="companyCostList" item="node" index="index" separator=",">
+            (
+            #{node.id},#{node.name,jdbcType=VARCHAR}, #{node.fengliangBefore,jdbcType=DOUBLE}, #{node.guliangBefore,jdbcType=DOUBLE},
+            #{node.jianliangBefore,jdbcType=DOUBLE}, #{node.xuliangBefore,jdbcType=DOUBLE}, #{node.fengliangAfter,jdbcType=DOUBLE},
+            #{node.guliangAfter,jdbcType=DOUBLE}, #{node.jianliangAfter,jdbcType=DOUBLE}, #{node.xuliangAfter,jdbcType=DOUBLE}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="com.example.demo.entity.CompanyCost" useGeneratedKeys="true">
+    insert into company_cost
+    values (#{id},#{name,jdbcType=VARCHAR}, #{fengliangBefore,jdbcType=DOUBLE}, #{guliangBefore,jdbcType=DOUBLE},
+      #{jianliangBefore,jdbcType=DOUBLE}, #{xuliangBefore,jdbcType=DOUBLE}, #{fengliangAfter,jdbcType=DOUBLE},
+      #{guliangAfter,jdbcType=DOUBLE}, #{jianliangAfter,jdbcType=DOUBLE}, #{xuliangAfter,jdbcType=DOUBLE}
+      )
+  </insert>
+
+    <insert id="insertByCost" parameterType="com.example.demo.entity.CompanyCost">
+      select `c`.id as `id`,`c`.name as `name`,`c`.fengliang_before as `fengliang_before`,`c`.guliang_before as `guliang_before`,
+        `c`.jianliang_before as `jianliang_before`,`c`.xuliang_before as `xuliang_before`,`c`.fengliang_after as `fengliang_after`,`c`.guliang_after as `guliang_after`,
+        `c`.jianliang_after as `jianliang_after`,`c`.xuliang_after as `xuliang_after`  from `company` as `c`
+
+      insert into `company_cost`
+      (`id`,`company_name`, `fengliangcost_before`,
+      `guliangcost_before`, `jianliangcost_before`, `xuliangcost_before`,
+      `fengliangcost_after`, `guliangcost_after`, `jianliangcost_after`,
+      `xuliangcost_after`)
+      values (`c`.id , `c`.name ,`c`.fengliang_before * #{cost.fengjia},`c`.guliang_before * #{cost.gujia},`c`.jianliangcost_before) * #{cost.jianjia} ,
+      `c`.xuliang_before * #{cost.xuliang} ,`c`.fengliang_after * #{cost.fengjia},`c`.guliang_after * #{cost.gujia},`c`.jianliangcost_after) * #{cost.jianjia} ,
+      `c`.xuliang_after * #{cost.xuliang})
+
+
+  </insert>
+</mapper>

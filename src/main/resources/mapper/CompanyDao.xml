@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.CompanyDao">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Company">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="fengliang_before" jdbcType="DOUBLE" property="fengliangBefore" />
+    <result column="guliang_before" jdbcType="DOUBLE" property="guliangBefore" />
+    <result column="jianliang_before" jdbcType="DOUBLE" property="jianliangBefore" />
+    <result column="xuliang_before" jdbcType="DOUBLE" property="xuliangBefore" />
+    <result column="fengliang_after" jdbcType="DOUBLE" property="fengliangAfter" />
+    <result column="guliang_after" jdbcType="DOUBLE" property="guliangAfter" />
+    <result column="jianliang_after" jdbcType="DOUBLE" property="jianliangAfter" />
+    <result column="xuliang_after" jdbcType="DOUBLE" property="xuliangAfter" />
+  </resultMap>
+  <insert id="insert" parameterType="com.example.demo.entity.Company">
+    insert into company (id, `name`, fengliang_before, 
+      guliang_before, jianliang_before, xuliang_before, 
+      fengliang_after, guliang_after, jianliang_after, 
+      xuliang_after)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fengliangBefore,jdbcType=DOUBLE}, 
+      #{guliangBefore,jdbcType=DOUBLE}, #{jianliangBefore,jdbcType=DOUBLE}, #{xuliangBefore,jdbcType=DOUBLE}, 
+      #{fengliangAfter,jdbcType=DOUBLE}, #{guliangAfter,jdbcType=DOUBLE}, #{jianliangAfter,jdbcType=DOUBLE}, 
+      #{xuliangAfter,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.entity.Company">
+    insert into company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="fengliangBefore != null">
+        fengliang_before,
+      </if>
+      <if test="guliangBefore != null">
+        guliang_before,
+      </if>
+      <if test="jianliangBefore != null">
+        jianliang_before,
+      </if>
+      <if test="xuliangBefore != null">
+        xuliang_before,
+      </if>
+      <if test="fengliangAfter != null">
+        fengliang_after,
+      </if>
+      <if test="guliangAfter != null">
+        guliang_after,
+      </if>
+      <if test="jianliangAfter != null">
+        jianliang_after,
+      </if>
+      <if test="xuliangAfter != null">
+        xuliang_after,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="fengliangBefore != null">
+        #{fengliangBefore,jdbcType=DOUBLE},
+      </if>
+      <if test="guliangBefore != null">
+        #{guliangBefore,jdbcType=DOUBLE},
+      </if>
+      <if test="jianliangBefore != null">
+        #{jianliangBefore,jdbcType=DOUBLE},
+      </if>
+      <if test="xuliangBefore != null">
+        #{xuliangBefore,jdbcType=DOUBLE},
+      </if>
+      <if test="fengliangAfter != null">
+        #{fengliangAfter,jdbcType=DOUBLE},
+      </if>
+      <if test="guliangAfter != null">
+        #{guliangAfter,jdbcType=DOUBLE},
+      </if>
+      <if test="jianliangAfter != null">
+        #{jianliangAfter,jdbcType=DOUBLE},
+      </if>
+      <if test="xuliangAfter != null">
+        #{xuliangAfter,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getCompany" resultType="com.example.demo.entity.Company">
+        select * from company
+  </select>
+</mapper>
