@@ -4,15 +4,18 @@ import com.example.demo.entity.Employee;
 
 import com.example.demo.entity.Page1;
 import com.example.demo.service.EmployeeService;
+import com.example.demo.util.PagedGridResult;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,24 +29,25 @@ import java.util.Map;
  */
 @RequestMapping("/Employee")
 @RestController
-@Api(description = "测试用户分页")
+@Api(value = "测试用户分页" ,tags = {"测试分页tags"})
 public class EmplyeeController {
 
     @Autowired
     EmployeeService employeeService;
 
+    /**
+     * 使用分页插件
+     * @param page1
+     * @return
+     */
     @GetMapping("")
-    public Map<String, Object> getEmployeeList(@RequestBody Page1 page1){
+    public PagedGridResult getEmployeeList(@RequestBody Page1 page1){
         Map<String, Object> data = new HashMap<>();
         int pageNo = page1.getPage();
         int pageSize = page1.getSize();
         Page page = PageHelper.startPage(pageNo,pageSize,true);
         ArrayList<Employee> employeeArrayList = employeeService.getEmployeeList();
-
-        data.put("total", page.getTotal());
-        data.put("nowPage", pageNo);
-        data.put("data", employeeArrayList);
-        return data;
+        return EmplyeeController.setterPagedGrid(employeeArrayList, pageNo);
     }
 
     @PostMapping("/test")
@@ -54,4 +58,21 @@ public class EmplyeeController {
         }
     }
 
+    @Scheduled(cron = "0 * * * * *")
+    public void getEmployeeByScheduled(){
+        ArrayList<Employee> employeeList = employeeService.getEmployeeList();
+        for (Employee employee : employeeList) {
+            System.out.println(employee.toString());
+        }
+    }
+
+    private static PagedGridResult setterPagedGrid(List<?> list, Integer page) {
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult grid = new PagedGridResult();
+        grid.setPage(page);
+        grid.setRows(list);
+        grid.setTotal(pageList.getPages());
+        grid.setRecords(pageList.getTotal());
+        return grid;
+    }
 }

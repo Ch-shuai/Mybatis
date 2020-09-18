@@ -3,9 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.entity.Company;
 import com.example.demo.entity.Cost;
 import com.example.demo.service.DataService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.sqlite.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,7 @@ public class DataController {
     }
 
     @RequestMapping("")
+    @ApiOperation(value = "修改数据" , notes = "修改数据库里的数据" , httpMethod = "GET")
     public void modifyData() {
         Date startTime = new Date();
         System.out.println("开始执行的时间-----"+startTime);

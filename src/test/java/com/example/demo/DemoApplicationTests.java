@@ -18,4 +18,10 @@ class DemoApplicationTests {
         System.out.println(name);
     }
 
+    @Test
+    void jisuan(){
+        System.out.println(1000==1000);
+        System.out.println(100==100);
+    }
+
 }

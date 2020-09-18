@@ -6,6 +6,13 @@ spring:
     password: root
     url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    username: 1282591110@qq.com
+    password: hnsbokiybbnyhhcb
+    default-encoding: UTF-8
+    port: 25
+    protocol: stmp
   redis:
     host: 127.0.0.1
     port: 6379
@@ -35,6 +42,8 @@ mybatis:
   type-aliases-package: com.example.demo.entity
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 pagehelper:
   helper-dialect: mysql
   page-size-zero: true
+  support-methods-arguments: true

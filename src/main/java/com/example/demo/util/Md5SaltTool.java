@@ -19,7 +19,6 @@ public class Md5SaltTool {
 
     /**
      * 将16进制字符串转换成字节数组
-     *
      * @param hex
      * @return
      */
